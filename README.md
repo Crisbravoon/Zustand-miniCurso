@@ -1,12 +1,16 @@
-# React + TypeScript + Vite + Zustand + TailwindCSS + ReactRouterDom
+# Mini Curso Zustand
 
-Este es un cascarón de proyecto, siéntete libre de usarlo para tus proyectos.
+Mini curso de zustand en donde utilizamos:
+ 1. TypeScript.
+ 2. TailwindCSS.
+ 3. ReactRouterDom
+ 4. React + Vite
 
 <img src="https://github.com/Klerith/zustand-mini-curso/blob/main/public/screenshot.png?raw=true" alt="Dashboard Screenshot">
 
 
 
-## Instalar
+## ¿Como hacer correr el proyecto?
 
 1. Clonar proyecto
 2. Instalar dependencias ```npm install```
