@@ -1,4 +1,5 @@
 import { create } from "zustand";
+import { persist } from "zustand/middleware";
 
 interface Bears {
   id: number;
@@ -12,9 +13,7 @@ interface BearsState {
 
   bears: Bears[];
 
-  computed: {
-    totalBears: number;
-  };
+  totalBears: () => number;
 
   increaseBears: (
     type: "blackBears" | "pandaBears" | "polarBears",
@@ -27,35 +26,42 @@ interface BearsState {
   addBear: () => void;
 }
 
-export const useBearStore = create<BearsState>()((set, get) => ({
-  bears: [
-    {
-      id: 1,
-      name: "Oso #1",
-    },
-  ],
-
-  computed: {
-    get totalBears() {
-      return get().polarBears + get().pandaBears + get().blackBears;
-    },
-  },
-
-  blackBears: 10,
-  polarBears: 5,
-  pandaBears: 2,
-
-  increaseBears: (type, by) => set((state) => ({ [type]: state[type] + by })),
-
-  doNothing: () => set((state) => ({ bears: [...state.bears] })),
-
-  addBear: () =>
-    set((state) => ({
+export const useBearStore = create<BearsState>()(
+  persist(
+    (set, get) => ({
       bears: [
-        ...state.bears,
-        { id: state.bears.length + 1, name: `Oso #${state.bears.length + 1}` },
+        {
+          id: 1,
+          name: "Oso #1",
+        },
       ],
-    })),
 
-  clearBear: () => set({ bears: [] }),
-}));
+      totalBears: () => {
+        return get().polarBears + get().pandaBears + get().blackBears;
+      },
+
+      blackBears: 10,
+      polarBears: 5,
+      pandaBears: 2,
+
+      increaseBears: (type, by) =>
+        set((state) => ({ [type]: state[type] + by })),
+
+      doNothing: () => set((state) => ({ bears: [...state.bears] })),
+
+      addBear: () =>
+        set((state) => ({
+          bears: [
+            ...state.bears,
+            {
+              id: state.bears.length + 1,
+              name: `Oso #${state.bears.length + 1}`,
+            },
+          ],
+        })),
+
+      clearBear: () => set({ bears: [] }),
+    }),
+    { name: "bears-store" }
+  )
+);
